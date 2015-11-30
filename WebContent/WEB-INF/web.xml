@@ -18,6 +18,11 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+	    <servlet-name>LegacyLoader</servlet-name>
+	    <servlet-class>LegacyLoader</servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/REST/*</url-pattern>
