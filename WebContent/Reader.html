@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+</style>
+
+<meta charset="ISO-8859-1"/> 
+<body>
+
+<script>
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      	var obj = JSON.parse(xhttp.responseText);
+      	var i;
+      	var response= "<p>";
+      	if (obj.ParinguId != null) response+="Päringu Id: " + obj.ParinguId + "<br>";
+      	if (obj.TelefoniNumber != null) response+="Telefon: " + obj.TelefoniNumber + "<br>";
+      	if (obj.TeenuseKeel != null) response+="Keel: " + obj.TeenuseKeel + "<br>";
+      	if (obj.TeenusAktiivneKuni != null) response+="Teenus " + obj.TeenusAktiivneKuni + "<br>";
+      	if (obj.XLteenus != null) response+="XL-teenus aktiivne: " + obj.XLteenus + "<br>";
+      	if (obj.overRideNimed != null && obj.overRideNumbrid != null){
+      		response+="<table>";
+      	  	response+="<tr><td>Nimi</td><td>Number</td></tr>";
+      	      for(i = 0; i < obj.overRideNimed.length && i < obj.overRideNumbrid.length; i++) {
+      	          if (obj.overRideNimed[i] != null && obj.overRideNumbrid[i] != null )
+      	          	{
+            	    	response += "<tr><td>" +
+            	      	obj.overRideNimed[i] +
+            	        "</td><td>" +
+            	      	obj.overRideNumbrid[i] +
+            	        "</td></tr>";
+      	          	
+      	          	}
+      	      }
+      	    response += "</table>";
+      		
+      	}
+      	
+      	response += "</p>";
+      	document.getElementById("responseCanvas").innerHTML = response;
+    }
+  };
+  xhttp.open("GET", "REST/JsonProvider", true);
+  xhttp.send();
+  setTimeout(loadDoc, 5000);
+}
+</script>
+
+<div id="demo"><p id="responseCanvas"></p><script type="text/javascript">loadDoc();</script></div>
+
+</body>
+</html>

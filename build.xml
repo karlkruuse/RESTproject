@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="RestServer">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../eclipse/jee-mars/Eclipse.app/Contents/MacOS/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="Apache Tomcat v8.0 [Apache Tomcat v8.0].libraryclasspath">
+        <pathelement location="apache-tomcat-8.0.30/lib/annotations-api.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/catalina-ant.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/catalina-ha.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/catalina-storeconfig.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/catalina-tribes.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/catalina.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/ecj-4.4.2.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/el-api.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/jasper-el.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/jasper.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/jsp-api.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/servlet-api.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-api.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-coyote.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-dbcp.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-i18n-es.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-i18n-fr.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-i18n-ja.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-jdbc.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-jni.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-util-scan.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-util.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/tomcat-websocket.jar"/>
+        <pathelement location="apache-tomcat-8.0.30/lib/websocket-api.jar"/>
+    </path>
+    <path id="RestServer.classpath">
+        <pathelement location="target/classes"/>
+        <pathelement location="lib/json-20140107.jar"/>
+        <pathelement location="lib/jersey-core-1.19.jar"/>
+        <pathelement location="lib/jersey-server-1.19.jar"/>
+        <pathelement location="lib/asm-3.3.1.jar"/>
+        <pathelement location="lib/jersey-bundle-1.19.jar"/>
+        <path refid="Apache Tomcat v8.0 [Apache Tomcat v8.0].libraryclasspath"/>
+        <pathelement location="apache-tomcat-8.0.30/lib"/>
+    </path>
+    <target depends="clean" name="init">
+        <mkdir dir="target/classes"/>
+        <copy includeemptydirs="false" todir="target/classes">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="target/classes"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="target/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="RestServer.classpath"/>
+        </javac>
+    </target>
+              	
+    <target depends="build" name="war">
+    	<war destfile="RestServer.war" webxml="WebContent/WEB-INF/web.xml">
+    	  <classes dir="target/classes"/>
+          <fileset file="WebContent/Reader.html"/>
+    	  <lib dir="lib"/>
+    	</war>    	
+    </target>
+              	
+    <target depends="war" name="deploy">
+    	<delete dir="apache-tomcat-8.0.30/webapps/RestServer"/>
+    	<copy todir="apache-tomcat-8.0.30/webapps" >
+    	  <file file="RestServer.war"/>
+    	</copy>    	
+    	<delete file="RestServer.war"/>
+    </target>
+              	
+</project>

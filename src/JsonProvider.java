@@ -16,8 +16,6 @@ import org.json.JSONObject;
 @Path("/JsonProvider")
 public class JsonProvider {
 
-	static JSONObject jsonData = new JSONObject();
-	
 	@GET
 	@Produces("application/json")
 	public Response getResponse()
